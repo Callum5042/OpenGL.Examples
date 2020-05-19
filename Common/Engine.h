@@ -15,7 +15,7 @@ public:
 
 	int Execute(int argc, char** argv);
 
-	static Engine* GetInstance() { return m_Instance; }
+	static Engine& Get() { return *m_Instance; }
 	constexpr std::unique_ptr <Events::EventDispatcher>& GetEventDispatcher() { return m_EventDispatcher; }
 	constexpr std::unique_ptr<MainWindow>& GetWindow() { return m_MainWindow; }
 	constexpr Timer& GetTimer() { return m_Timer; }

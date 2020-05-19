@@ -11,7 +11,7 @@ namespace
 {
 	void PollSDLEvents()
 	{
-		std::unique_ptr<Events::EventDispatcher>& dispatcher = Engine::GetInstance()->GetEventDispatcher();
+		std::unique_ptr<Events::EventDispatcher>& dispatcher = Engine::Get().GetEventDispatcher();
 
 		SDL_Event e{};
 		while (SDL_PollEvent(&e))

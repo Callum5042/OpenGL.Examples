@@ -53,7 +53,7 @@ namespace Events
 		KeyDownEvent();
 		void Handle() override;
 
-		KeyData key;
+		KeyData key = {};
 	};
 
 	class KeyReleasedEvent : public IEvent
@@ -62,14 +62,14 @@ namespace Events
 		KeyReleasedEvent();
 		void Handle() override;
 
-		KeyData key;
+		KeyData key = {};
 	};
 
 	class InputListener
 	{
 	public:
 		InputListener();
-		virtual ~InputListener() = default;
+		virtual ~InputListener();
 
 		virtual void OnMouseDown(MouseData&& data) { }
 		virtual void OnMouseReleased(MouseData&& data) { }
