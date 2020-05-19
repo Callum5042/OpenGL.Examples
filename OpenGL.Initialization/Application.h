@@ -1,0 +1,19 @@
+#pragma once
+
+#include <Engine.h>
+#include "WindowEvents.h"
+
+class Application : public Engine, public Events::WindowListener
+{
+public:
+	Application() = default;
+
+	bool OnInitialise() override;
+	void OnRender() override;
+
+	// Window Events
+	void OnQuit() override;
+
+private:
+	bool InitGlew();
+};
