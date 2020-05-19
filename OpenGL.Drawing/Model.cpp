@@ -59,16 +59,15 @@ void GL::Model::Render()
 
 	// Update shader transform
 	glm::mat4 transform = glm::mat4(1.0f);
-	unsigned int transformLoc = glGetUniformLocation(app->ShaderId(), "transform");
+	unsigned int transformLoc = glGetUniformLocation(app->Shader()->ShaderId(), "transform");
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
 	// Update shader view
-
-	unsigned int viewLoc = glGetUniformLocation(app->ShaderId(), "view");
+	unsigned int viewLoc = glGetUniformLocation(app->Shader()->ShaderId(), "view");
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(app->Camera()->View()));
 
 	// Update shader projection
-	unsigned int projLoc = glGetUniformLocation(app->ShaderId(), "projection");
+	unsigned int projLoc = glGetUniformLocation(app->Shader()->ShaderId(), "projection");
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(app->Camera()->Projection()));
 
 	// Draw

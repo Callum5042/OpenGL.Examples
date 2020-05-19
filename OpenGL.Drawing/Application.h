@@ -2,11 +2,12 @@
 
 #include <Engine.h>
 #include "WindowEvents.h"
-#include <gl/glew.h>
+
 #include <string>
 
 #include "Model.h"
 #include "Camera.h"
+#include "Shader.h"
 
 namespace GL
 {
@@ -19,7 +20,7 @@ namespace GL
 		void OnUpdate() override;
 		void OnRender() override;
 
-		constexpr int ShaderId() { return m_ShaderId; }
+		constexpr Shader* Shader() { return m_Shader; }
 		constexpr Camera* Camera() { return m_Camera; }
 
 		// Window Events
@@ -30,16 +31,7 @@ namespace GL
 		bool InitGlew();
 
 		Model* m_Model = nullptr;
+		GL::Shader* m_Shader = nullptr;
 		GL::Camera* m_Camera = nullptr;
-
-		// Shaders
-		GLuint m_ShaderId;
-		GLuint m_VertexShader;
-		GLuint m_FragmentShader;
-
-		GLuint LoadVertexShader(std::string&& vertexPath);
-		GLuint LoadFragmentShader(std::string&& fragmentPath);
-		std::string ReadShader(std::string&& filename);
-		bool HasCompiled(GLuint shader);
 	};
 }
