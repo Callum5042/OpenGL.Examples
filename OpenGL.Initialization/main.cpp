@@ -3,6 +3,6 @@
 
 int main(int argc, char** argv)
 {
-	std::unique_ptr<Engine> app(new Application());
+	std::unique_ptr<Engine> app(new GL::Application());
 	app->Execute(argc, argv);
 }

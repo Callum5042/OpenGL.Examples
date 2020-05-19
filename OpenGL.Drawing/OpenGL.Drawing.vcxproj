@@ -94,7 +94,9 @@
     <ClCompile Include="..\Common\Timer.cpp" />
     <ClCompile Include="..\Common\WindowEvents.cpp" />
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Model.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Common\Engine.h" />
@@ -105,6 +107,8 @@
     <ClInclude Include="..\Common\Timer.h" />
     <ClInclude Include="..\Common\WindowEvents.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Model.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FragmentShader.glsl" />

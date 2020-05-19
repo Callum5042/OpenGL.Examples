@@ -5,33 +5,41 @@
 #include <gl/glew.h>
 #include <string>
 
-class Application : public Engine, public Events::WindowListener
+#include "Model.h"
+#include "Camera.h"
+
+namespace GL
 {
-public:
-	Application() = default;
+	class Application : public Engine, public Events::WindowListener
+	{
+	public:
+		Application() = default;
 
-	bool OnInitialise() override;
-	void OnRender() override;
+		bool OnInitialise() override;
+		void OnUpdate() override;
+		void OnRender() override;
 
-	// Window Events
-	void OnQuit() override;
-	void OnResize(int width, int height) override;
+		constexpr int ShaderId() { return m_ShaderId; }
+		constexpr Camera* Camera() { return m_Camera; }
 
-private:
-	bool InitGlew();
+		// Window Events
+		void OnQuit() override;
+		void OnResize(int width, int height) override;
 
-	// Shaders
-	GLuint m_ShaderId;
-	GLuint m_VertexShader;
-	GLuint m_FragmentShader;
+	private:
+		bool InitGlew();
 
-	GLuint LoadVertexShader(std::string&& vertexPath);
-	GLuint LoadFragmentShader(std::string&& fragmentPath);
-	std::string ReadShader(std::string&& filename);
-	bool HasCompiled(GLuint shader);
+		Model* m_Model = nullptr;
+		GL::Camera* m_Camera = nullptr;
 
-	// Drawing code
-	GLuint m_VertexArrayObject;
-	GLuint m_VertexBuffer;
-	GLuint m_IndexBuffer;
-};
+		// Shaders
+		GLuint m_ShaderId;
+		GLuint m_VertexShader;
+		GLuint m_FragmentShader;
+
+		GLuint LoadVertexShader(std::string&& vertexPath);
+		GLuint LoadFragmentShader(std::string&& fragmentPath);
+		std::string ReadShader(std::string&& filename);
+		bool HasCompiled(GLuint shader);
+	};
+}

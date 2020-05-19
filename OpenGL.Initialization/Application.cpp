@@ -2,7 +2,7 @@
 #include <gl/glew.h>
 #include <iostream>
 
-bool Application::OnInitialise()
+bool GL::Application::OnInitialise()
 {
 	if (!InitGlew())
 		return false;
@@ -10,7 +10,7 @@ bool Application::OnInitialise()
 	return true;
 }
 
-void Application::OnRender()
+void GL::Application::OnRender()
 {
 	static const GLfloat blue[] = { 0.3f, 0.5f, 0.7f, 1.0f };
 	glClearBufferfv(GL_COLOR, 0, blue);
@@ -20,12 +20,12 @@ void Application::OnRender()
 	SDL_GL_SwapWindow(GetWindow()->GetWindow());
 }
 
-void Application::OnQuit()
+void GL::Application::OnQuit()
 {
 	Exit();
 }
 
-bool Application::InitGlew()
+bool GL::Application::InitGlew()
 {
 	GLenum error = glewInit();
 	if (error != GLEW_OK)

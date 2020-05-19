@@ -7,10 +7,15 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-bool Application::OnInitialise()
+bool GL::Application::OnInitialise()
 {
 	if (!InitGlew())
 		return false;
+
+	m_Model = new GL::Model();
+	m_Model->Load();
+
+	m_Camera = new GL::Camera();
 
 	// Shaders
 	m_ShaderId = glCreateProgram();
@@ -24,100 +29,37 @@ bool Application::OnInitialise()
 	glLinkProgram(m_ShaderId);
 	glUseProgram(m_ShaderId);
 
-	// transform
-	glm::mat4 transform = glm::mat4(1.0f);
-	transform = glm::rotate(transform, glm::radians(-45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-
-	unsigned int transformLoc = glGetUniformLocation(m_ShaderId, "transform");
-	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-
-	// view
-	glm::mat4 view = glm::mat4(1.0f);
-	view = glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-
-	unsigned int viewLoc = glGetUniformLocation(m_ShaderId, "view");
-	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-
-	// projection
-	glm::mat4 projection = glm::mat4(1.0f);
-	projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-
-	unsigned int projLoc = glGetUniformLocation(m_ShaderId, "projection");
-	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-
-	// Drawing
-	static const GLfloat vertices[] =
-	{
-		-0.5, +0.5, 0.0f,
-		+0.5, +0.5, 0.0f,
-		+0.5, -0.5, 0.0f,
-		-0.5, -0.5, 0.0f
-	};
-
-	static const GLushort indices[] =
-	{
-		0, 1, 2,
-		0, 2, 3
-	};
-
-	static const GLfloat colours[] =
-	{
-		1.0f, 0.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f, 1.0f,
-		0.0f, 0.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 0.0f, 1.0f,
-	};
-
-	// Vertex Array Object
-	glCreateVertexArrays(1, &m_VertexArrayObject);
-	glBindVertexArray(m_VertexArrayObject);
-
-	// Vertex Buffer
-	glCreateBuffers(1, &m_VertexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
-
-	glNamedBufferStorage(m_VertexBuffer, sizeof(vertices), nullptr, GL_DYNAMIC_STORAGE_BIT);
-	glNamedBufferSubData(m_VertexBuffer, 0, sizeof(vertices), vertices);
-
-	// Index Buffer
-	glCreateBuffers(1, &m_IndexBuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	// Something pipeline
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)sizeof(vertices));
-	glEnableVertexAttribArray(1);
-
 	return true;
 }
 
-void Application::OnRender()
+void GL::Application::OnUpdate()
+{
+	m_Camera->Update();
+}
+
+void GL::Application::OnRender()
 {
 	static const GLfloat blue[] = { 0.3f, 0.5f, 0.7f, 1.0f };
 	glClearBufferfv(GL_COLOR, 0, blue);
 
-	// Render
-	glBindVertexArray(m_VertexArrayObject);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, nullptr);
+	m_Model->Render();
 
 	SDL_GL_SetSwapInterval(0);
 	SDL_GL_SwapWindow(GetWindow()->GetWindow());
 }
 
-void Application::OnQuit()
+void GL::Application::OnQuit()
 {
 	Exit();
 }
 
-void Application::OnResize(int width, int height)
+void GL::Application::OnResize(int width, int height)
 {
+	m_Camera->Resize(width, height);
 	glViewport(0, 0, width, height);
 }
 
-bool Application::InitGlew()
+bool GL::Application::InitGlew()
 {
 	GLenum error = glewInit();
 	if (error != GLEW_OK)
@@ -134,7 +76,7 @@ bool Application::InitGlew()
 	return true;
 }
 
-GLuint Application::LoadVertexShader(std::string&& vertexPath)
+GLuint GL::Application::LoadVertexShader(std::string&& vertexPath)
 {
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
@@ -152,7 +94,7 @@ GLuint Application::LoadVertexShader(std::string&& vertexPath)
 	return vertexShader;
 }
 
-GLuint Application::LoadFragmentShader(std::string&& fragmentPath)
+GLuint GL::Application::LoadFragmentShader(std::string&& fragmentPath)
 {
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
@@ -170,7 +112,7 @@ GLuint Application::LoadFragmentShader(std::string&& fragmentPath)
 	return fragmentShader;
 }
 
-bool Application::HasCompiled(GLuint shader)
+bool GL::Application::HasCompiled(GLuint shader)
 {
 	GLint compiled;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
@@ -192,7 +134,7 @@ bool Application::HasCompiled(GLuint shader)
 	return true;
 }
 
-std::string Application::ReadShader(std::string&& filename)
+std::string GL::Application::ReadShader(std::string&& filename)
 {
 	std::ifstream file(filename);
 
