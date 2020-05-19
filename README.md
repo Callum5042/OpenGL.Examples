@@ -8,3 +8,4 @@ Sample projects for each step in OpenGL 4.0
 - [ ] Lighting
 - [ ] Normal Mapping
 - [ ] Shadows
+- [ ] Cubemapping (Skybox)
