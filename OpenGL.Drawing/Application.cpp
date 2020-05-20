@@ -2,10 +2,22 @@
 #include <gl/glew.h>
 #include <iostream>
 
+/*
+	
+	[-] Wireframe
+	[-] Anti Aliasing
+
+*/
+
 bool GL::Application::OnInitialise()
 {
 	if (!InitGlew())
 		return false;
+
+	std::cout << "OpenGL: " << glGetString(GL_VERSION) << '\n';
+	std::cout << "Vendor: " << glGetString(GL_VENDOR) << '\n';
+	std::cout << "Renderer: " << glGetString(GL_RENDERER) << '\n';
+	std::cout << "Shader: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << '\n';
 
 	m_Shader->Load("D:\\Sources\\Testing\\OpenGL.Testing\\OpenGL.Drawing\\VertexShader.glsl", "D:\\Sources\\Testing\\OpenGL.Testing\\OpenGL.Drawing\\FragmentShader.glsl");
 	m_Model->Load();

@@ -7,6 +7,11 @@ bool GL::Application::OnInitialise()
 	if (!InitGlew())
 		return false;
 
+	std::cout << "OpenGL: " << glGetString(GL_VERSION) << '\n';
+	std::cout << "Vendor: " << glGetString(GL_VENDOR) << '\n';
+	std::cout << "Renderer: " << glGetString(GL_RENDERER) << '\n';
+	std::cout << "Shader: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << '\n';
+
 	return true;
 }
 
@@ -36,7 +41,7 @@ bool GL::Application::InitGlew()
 
 #ifdef _DEBUG
 	const unsigned char* glewVersion = glewGetString(GLEW_VERSION);
-	std::cout << "Glew Version: " << glewVersion << '\n';
+	std::cout << "Glew: " << glewVersion << '\n';
 #endif
 
 	return true;

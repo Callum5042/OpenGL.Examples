@@ -3,7 +3,7 @@
 
 void GL::Camera::Update()
 {
-	float distance = 1.0f;
+	float distance = 5.0f;
 
 	glm::vec3 direction;
 	direction.x = distance * cos(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));

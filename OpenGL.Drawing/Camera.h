@@ -31,7 +31,7 @@ namespace GL
 
 		float m_FOV = 85.0f;
 
-		float m_Pitch = 0.0f;
+		float m_Pitch = 30.0f;
 		float m_Yaw = 90.0f;
 
 		// Last mouse coordinates
