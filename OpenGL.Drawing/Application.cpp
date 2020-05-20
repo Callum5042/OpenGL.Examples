@@ -1,11 +1,6 @@
 #include "Application.h"
 #include <gl/glew.h>
 #include <iostream>
-#include <fstream>
-#include <sstream>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 bool GL::Application::OnInitialise()
 {

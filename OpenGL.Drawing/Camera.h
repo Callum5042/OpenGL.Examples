@@ -15,7 +15,6 @@ namespace GL
 		void Update();
 		void Resize(int width, int height);
 
-		constexpr glm::vec3 Position() { return m_Position; }
 		constexpr glm::mat4 View() { return m_View; }
 		constexpr glm::mat4 Projection() { return m_Projection; }
 

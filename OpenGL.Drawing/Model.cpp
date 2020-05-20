@@ -21,14 +21,6 @@ void GL::Model::Load()
 		0, 2, 3
 	};
 
-	static const GLfloat colours[] =
-	{
-		1.0f, 0.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f, 1.0f,
-		0.0f, 0.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 0.0f, 1.0f,
-	};
-
 	// Vertex Array Object
 	glCreateVertexArrays(1, &m_VertexArrayObject);
 	glBindVertexArray(m_VertexArrayObject);
