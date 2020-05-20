@@ -9,7 +9,7 @@ public:
 	MainWindow();
 	MainWindow(MainWindow&) = delete;
 	MainWindow& operator=(MainWindow&) = delete;
-	~MainWindow();
+	virtual ~MainWindow();
 
 	bool Create(std::string&& title, int width, int height);
 	void Destroy();

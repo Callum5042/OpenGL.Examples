@@ -25,6 +25,11 @@ namespace Events
 	class EventDispatcher
 	{
 	public:
+		EventDispatcher() = default;
+		EventDispatcher(EventDispatcher&) = delete;
+		EventDispatcher& operator=(EventDispatcher&) = delete;
+		virtual ~EventDispatcher() = default;
+
 		void PollEvents();
 		void AddEvent(IEvent* e);
 

@@ -7,13 +7,8 @@ bool GL::Application::OnInitialise()
 	if (!InitGlew())
 		return false;
 
-	m_Shader = new GL::Shader();
 	m_Shader->Load("D:\\Sources\\Testing\\OpenGL.Testing\\OpenGL.Drawing\\VertexShader.glsl", "D:\\Sources\\Testing\\OpenGL.Testing\\OpenGL.Drawing\\FragmentShader.glsl");
-
-	m_Model = new GL::Model();
 	m_Model->Load();
-
-	m_Camera = new GL::Camera();
 
 	return true;
 }

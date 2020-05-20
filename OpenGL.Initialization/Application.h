@@ -9,6 +9,7 @@ namespace GL
 	{
 	public:
 		Application() = default;
+		virtual ~Application() = default;
 
 		bool OnInitialise() override;
 		void OnRender() override;

@@ -37,6 +37,7 @@ bool MainWindow::Create(std::string&& title, int width, int height)
 
 void MainWindow::Destroy()
 {
+	SDL_GL_DeleteContext(m_glContext);
 	SDL_DestroyWindow(m_WindowHandle);
 }
 

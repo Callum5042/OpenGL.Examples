@@ -8,6 +8,7 @@ namespace GL
 	{
 	public:
 		Model() = default;
+		virtual ~Model() = default;
 
 		void Load();
 		void Render();

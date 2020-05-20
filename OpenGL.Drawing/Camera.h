@@ -11,6 +11,7 @@ namespace GL
 	{
 	public:
 		Camera() = default;
+		virtual ~Camera() = default;
 
 		void Update();
 		void Resize(int width, int height);

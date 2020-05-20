@@ -9,6 +9,7 @@ namespace GL
 	{
 	public:
 		Shader() = default;
+		virtual ~Shader() = default;
 
 		void Load(std::string&& vertexPath, std::string&& fragmentPath);
 		void Use();
