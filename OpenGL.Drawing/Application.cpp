@@ -2,13 +2,6 @@
 #include <gl/glew.h>
 #include <iostream>
 
-/*
-	
-	[-] Wireframe
-	[-] Anti Aliasing
-
-*/
-
 bool GL::Application::OnInitialise()
 {
 	if (!InitGlew())
@@ -21,14 +14,6 @@ bool GL::Application::OnInitialise()
 
 	m_Shader->Load("D:\\Sources\\Testing\\OpenGL.Testing\\OpenGL.Drawing\\VertexShader.glsl", "D:\\Sources\\Testing\\OpenGL.Testing\\OpenGL.Drawing\\FragmentShader.glsl");
 	m_Model->Load();
-
-	//glEnable(GL_MULTISAMPLE);
-
-	/*glEnable(GL_POLYGON_SMOOTH);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glHint(GL_POLYGON_SMOOTH, GL_NICEST);*/
-
 
 	return true;
 }
