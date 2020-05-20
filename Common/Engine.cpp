@@ -51,6 +51,12 @@ bool Engine::Initialise()
 {
 	m_Timer.Start();
 
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", SDL_GetError(), nullptr);
+		return false;
+	}
+
 	// Create window
 	m_MainWindow = std::unique_ptr<MainWindow>(new MainWindow());
 	if (!m_MainWindow->Create("OpenGL", 800, 600))

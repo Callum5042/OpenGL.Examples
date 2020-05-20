@@ -22,6 +22,14 @@ bool GL::Application::OnInitialise()
 	m_Shader->Load("D:\\Sources\\Testing\\OpenGL.Testing\\OpenGL.Drawing\\VertexShader.glsl", "D:\\Sources\\Testing\\OpenGL.Testing\\OpenGL.Drawing\\FragmentShader.glsl");
 	m_Model->Load();
 
+	//glEnable(GL_MULTISAMPLE);
+
+	/*glEnable(GL_POLYGON_SMOOTH);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glHint(GL_POLYGON_SMOOTH, GL_NICEST);*/
+
+
 	return true;
 }
 
@@ -36,6 +44,16 @@ void GL::Application::OnRender()
 	glClearBufferfv(GL_COLOR, 0, blue);
 
 	m_Shader->Use();
+
+	if (m_Wireframe)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+
 	m_Model->Render();
 
 	SDL_GL_SetSwapInterval(0);
@@ -51,6 +69,11 @@ void GL::Application::OnResize(int width, int height)
 {
 	m_Camera->Resize(width, height);
 	glViewport(0, 0, width, height);
+}
+
+void GL::Application::OnKeyDown(Events::KeyData&& data)
+{
+	m_Wireframe = !m_Wireframe;
 }
 
 bool GL::Application::InitGlew()
