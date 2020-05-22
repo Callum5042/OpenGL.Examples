@@ -12,12 +12,12 @@ bool GL::Application::OnInitialise()
 	std::cout << "Renderer: " << glGetString(GL_RENDERER) << '\n';
 	std::cout << "Shader: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << '\n';
 
-	m_Shader->Load("D:\\Sources\\Testing\\OpenGL.Testing\\OpenGL.Drawing\\VertexShader.glsl", "D:\\Sources\\Testing\\OpenGL.Testing\\OpenGL.Drawing\\FragmentShader.glsl");
+	m_Shader->Load("D:\\Sources\\Testing\\OpenGL.Testing\\OpenGL.Texturing\\VertexShader.glsl", "D:\\Sources\\Testing\\OpenGL.Testing\\OpenGL.Texturing\\FragmentShader.glsl");
 	m_Model->Load();
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
-
+	 
 	return true;
 }
 
