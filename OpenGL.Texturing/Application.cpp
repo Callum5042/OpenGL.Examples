@@ -13,7 +13,9 @@ bool GL::Application::OnInitialise()
 	std::cout << "Shader: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << '\n';
 
 	m_Shader->Load("D:\\Sources\\Testing\\OpenGL.Testing\\OpenGL.Texturing\\VertexShader.glsl", "D:\\Sources\\Testing\\OpenGL.Testing\\OpenGL.Texturing\\FragmentShader.glsl");
+
 	m_Model->Load();
+	m_Model->LoadTexture("C:/Users/Callum/Pictures/wall.jpg");
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);

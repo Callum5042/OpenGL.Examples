@@ -23,6 +23,7 @@ namespace GL
 		void OnMouseDown(MouseData&& data) override;
 		void OnMouseReleased(MouseData&& data) override;
 		void OnMouseMotion(MouseData&& data) override;
+		void OnMouseWheel(Events::MouseWheelEvent* e) override;
 
 	private:
 		glm::vec3 m_Position = glm::vec3(0, 0, -5);

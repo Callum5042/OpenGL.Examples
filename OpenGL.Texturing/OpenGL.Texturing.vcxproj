@@ -47,7 +47,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(ProjectName)\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)-$(Platform)\</IntDir>
-    <IncludePath>E:\SDL2-2.0.10\include;E:\glew-2.1.0\include;E:\glm;$(IncludePath)</IncludePath>
+    <IncludePath>E:\SDL2-2.0.10\include;E:\glew-2.1.0\include;E:\glm;E:\gli-0.7.0;$(IncludePath)</IncludePath>
     <LibraryPath>E:\SDL2-2.0.10\VisualC\bin\SDL2\Release-x64;E:\SDL2-2.0.10\VisualC\bin\SDL2main\Release-x64;E:\glew-2.1.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -98,6 +98,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Common\Engine.h" />

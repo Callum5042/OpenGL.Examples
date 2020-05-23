@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include <SDL_mouse.h>
+#include "Application.h"
 
 void GL::Camera::Update()
 {
@@ -36,8 +37,11 @@ void GL::Camera::OnMouseDown(MouseData&& data)
 
 void GL::Camera::OnMouseReleased(MouseData&& data)
 {
-	SDL_SetRelativeMouseMode(SDL_FALSE);
-	SDL_WarpMouseGlobal(m_LastMouseCoordinates.first, m_LastMouseCoordinates.second);
+	if (data.button == MouseButton::MOUSE_LMASK)
+	{
+		SDL_SetRelativeMouseMode(SDL_FALSE);
+		SDL_WarpMouseGlobal(m_LastMouseCoordinates.first, m_LastMouseCoordinates.second);
+	}
 }
 
 void GL::Camera::OnMouseMotion(MouseData&& data)
@@ -49,4 +53,13 @@ void GL::Camera::OnMouseMotion(MouseData&& data)
 
 		m_Pitch = std::clamp<float>(m_Pitch, -89, 89);
 	}
+}
+
+void GL::Camera::OnMouseWheel(Events::MouseWheelEvent* e)
+{
+	m_FOV -= static_cast<int>(e->wheel);
+	m_FOV = std::clamp<float>(m_FOV, 1.0f, 180.0f);
+
+	auto& window = Application::Get()->GetWindow();
+	Resize(window->GetWidth(), window->GetHeight());
 }

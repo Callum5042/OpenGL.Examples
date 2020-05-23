@@ -18,6 +18,13 @@ struct Vertex
 	float b;
 };
 
+GL::Model::~Model()
+{
+	glDeleteVertexArrays(1, &m_VertexArrayObject);
+	glDeleteBuffers(1, &m_VertexBuffer);
+	glDeleteBuffers(1, &m_IndexBuffer);
+}
+
 void GL::Model::Load()
 {
 	Vertex vertices[] =
