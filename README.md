@@ -2,8 +2,11 @@
 
 Sample projects for each step in OpenGL 4.0
 
-- [ ] Initialization
-- [ ] Drawing
+- [x] Initialization
+  - [x] GPU Name
+- [x] Drawing
+  - [x] Multisampling
+  - [x] Wireframe
 - [ ] Texturing
 - [ ] Lighting
 - [ ] Normal Mapping
