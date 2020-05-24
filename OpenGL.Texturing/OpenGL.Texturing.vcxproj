@@ -47,8 +47,8 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(ProjectName)\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)-$(Platform)\</IntDir>
-    <IncludePath>E:\SDL2-2.0.10\include;E:\glew-2.1.0\include;E:\glm;E:\gli-0.7.0;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\SDL2-2.0.10\VisualC\bin\SDL2\Release-x64;E:\SDL2-2.0.10\VisualC\bin\SDL2main\Release-x64;E:\glew-2.1.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>E:\SDL2-2.0.10\include;E:\glew-2.1.0\include;E:\glm;E:\SOIL\src;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\SDL2-2.0.10\VisualC\bin\SDL2\Release-x64;E:\SDL2-2.0.10\VisualC\bin\SDL2main\Release-x64;E:\glew-2.1.0\lib\Release\x64;E:\SOIL\projects\VC9\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -67,7 +67,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;Glew32.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;Glew32.lib;OpenGL32.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -98,7 +98,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Common\Engine.h" />

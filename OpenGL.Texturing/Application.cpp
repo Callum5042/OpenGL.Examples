@@ -14,8 +14,10 @@ bool GL::Application::OnInitialise()
 
 	m_Shader->Load("D:\\Sources\\Testing\\OpenGL.Testing\\OpenGL.Texturing\\VertexShader.glsl", "D:\\Sources\\Testing\\OpenGL.Testing\\OpenGL.Texturing\\FragmentShader.glsl");
 
+	// Dithering
 	m_Model->Load();
-	m_Model->LoadTexture("C:/Users/Callum/Pictures/wall.jpg");
+	//m_Model->LoadTexture("C:/Users/Callum/Pictures/wall.jpg");
+	m_Model->LoadTexture("C:/Users/Callum/Pictures/crate_diffuse.dds");
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
