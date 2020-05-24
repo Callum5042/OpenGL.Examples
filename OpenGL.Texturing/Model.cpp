@@ -133,24 +133,8 @@ void GL::Model::Render()
 
 void GL::Model::LoadTexture(std::string&& texture_path)
 {
-	// Load DDS images
-	// Mipmapping
-	// Blending
-	// Animation
-
-	// load and generate the texture
-	/*int width, height, nrChannels;
-	unsigned char* data = stbi_load(texture_path.c_str(), &width, &height, &nrChannels, 0);
-	if (data == nullptr)
-	{
-		std::string err("Failed to load texture: ");
-		err.append(stbi_failure_reason());
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", err.c_str(), nullptr);
-	}*/
-
 	int width, height, nrChannels;
 	unsigned char* data = SOIL_load_image(texture_path.c_str(), &width, &height, &nrChannels, 0);
-
 
 	// Create texture
 	glCreateTextures(GL_TEXTURE_2D, 1, &m_DiffuseTextureId);
@@ -158,11 +142,19 @@ void GL::Model::LoadTexture(std::string&& texture_path)
 	glTextureSubImage2D(m_DiffuseTextureId, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, data);
 	glBindTextureUnit(0, m_DiffuseTextureId);
 
-	// set the texture wrapping/filtering options (on the currently bound texture object)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glGenerateMipmap(GL_TEXTURE_2D);
 
 	SOIL_free_image_data(data);
+
+	// Sampler
+	GLuint sampler;
+	glCreateSamplers(1, &sampler);
+
+	glSamplerParameterf(sampler, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glSamplerParameterf(sampler, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glSamplerParameterf(sampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glSamplerParameterf(sampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glSamplerParameterf(sampler, GL_TEXTURE_MAX_ANISOTROPY, GL_MAX_TEXTURE_MAX_ANISOTROPY);
+
+	glBindSampler(0, sampler);
 }

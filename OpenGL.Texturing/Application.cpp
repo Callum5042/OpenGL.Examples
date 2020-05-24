@@ -12,12 +12,12 @@ bool GL::Application::OnInitialise()
 	std::cout << "Renderer: " << glGetString(GL_RENDERER) << '\n';
 	std::cout << "Shader: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << '\n';
 
-	m_Shader->Load("D:\\Sources\\Testing\\OpenGL.Testing\\OpenGL.Texturing\\VertexShader.glsl", "D:\\Sources\\Testing\\OpenGL.Testing\\OpenGL.Texturing\\FragmentShader.glsl");
+	m_Shader->Load("D:\\Sources\\OpenGL.Testing\\OpenGL.Texturing\\VertexShader.glsl", "D:\\Sources\\OpenGL.Testing\\OpenGL.Texturing\\FragmentShader.glsl");
 
 	// Dithering
 	m_Model->Load();
-	//m_Model->LoadTexture("C:/Users/Callum/Pictures/wall.jpg");
 	m_Model->LoadTexture("C:/Users/Callum/Pictures/crate_diffuse.dds");
+	//m_Model->LoadTexture("C:/Users/Callum/Pictures/crate_diffuse_mipmap.dds");
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
@@ -77,6 +77,8 @@ void GL::Application::OnKeyDown(Events::KeyData&& data)
 bool GL::Application::InitGlew()
 {
 	GLenum error = glewInit();
+
+	glewExperimental = true;
 	if (error != GLEW_OK)
 	{
 		std::cout << "Error: " << glewGetErrorString(error) << '\n';
