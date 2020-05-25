@@ -34,6 +34,9 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LoadDDS.cpp">
+      <Filter>External</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -69,6 +72,9 @@
     <ClInclude Include="Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LoadDDS.h">
+      <Filter>External</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
@@ -85,6 +91,9 @@
     </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{15d16e14-ba11-4652-8683-c1bb98533c51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External">
+      <UniqueIdentifier>{6fe11219-5f52-46bb-a16d-6a401a3d74d7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

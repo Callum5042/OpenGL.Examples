@@ -16,8 +16,8 @@ bool GL::Application::OnInitialise()
 
 	// Dithering
 	m_Model->Load();
-	m_Model->LoadTexture("C:/Users/Callum/Pictures/crate_diffuse.dds");
-	//m_Model->LoadTexture("C:/Users/Callum/Pictures/crate_diffuse_mipmap.dds");
+	//m_Model->LoadTexture("C:/Users/Callum/Pictures/crate_diffuse.dds");
+	m_Model->LoadTexture("C:/Users/Callum/Pictures/crate_diffuse_mipmap.dds");
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);

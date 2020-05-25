@@ -7,6 +7,9 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <SOIL.h>
+#include <iostream>
+
+#include "LoadDDS.h"
 
 struct Vertex
 {
@@ -133,18 +136,18 @@ void GL::Model::Render()
 
 void GL::Model::LoadTexture(std::string&& texture_path)
 {
-	int width, height, nrChannels;
-	unsigned char* data = SOIL_load_image(texture_path.c_str(), &width, &height, &nrChannels, 0);
+	LoadDDS dds;
+	dds.Load(std::move(texture_path));
 
-	// Create texture
 	glCreateTextures(GL_TEXTURE_2D, 1, &m_DiffuseTextureId);
-	glTextureStorage2D(m_DiffuseTextureId, 2, GL_RGB8, width, height);
-	glTextureSubImage2D(m_DiffuseTextureId, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glTextureStorage2D(m_DiffuseTextureId, dds.mipmap_count, dds.format, dds.width, dds.height);
+
+	for (auto& mipmap : dds.mipmaps)
+	{
+		glCompressedTextureSubImage2D(m_DiffuseTextureId, mipmap.level, 0, 0, mipmap.width, mipmap.height, dds.format, mipmap.texture_size, mipmap.data);
+	}
+
 	glBindTextureUnit(0, m_DiffuseTextureId);
-
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	SOIL_free_image_data(data);
 
 	// Sampler
 	GLuint sampler;
@@ -155,6 +158,12 @@ void GL::Model::LoadTexture(std::string&& texture_path)
 	glSamplerParameterf(sampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glSamplerParameterf(sampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glSamplerParameterf(sampler, GL_TEXTURE_MAX_ANISOTROPY, GL_MAX_TEXTURE_MAX_ANISOTROPY);
+	glSamplerParameterf(sampler, GL_TEXTURE_BASE_LEVEL, 0);
+	glSamplerParameterf(sampler, GL_TEXTURE_MAX_LEVEL, 0);
+
+	// Don't know if this is needed?
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipMapCount - 1);
 
 	glBindSampler(0, sampler);
 }
