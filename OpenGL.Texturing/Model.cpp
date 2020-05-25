@@ -136,15 +136,15 @@ void GL::Model::Render()
 
 void GL::Model::LoadTexture(std::string&& texture_path)
 {
-	LoadDDS dds;
+	RV::LoadDDS dds;
 	dds.Load(std::move(texture_path));
 
 	glCreateTextures(GL_TEXTURE_2D, 1, &m_DiffuseTextureId);
-	glTextureStorage2D(m_DiffuseTextureId, dds.mipmap_count, dds.format, dds.width, dds.height);
+	glTextureStorage2D(m_DiffuseTextureId, dds.MipmapCount(), dds.Format(), dds.Width(), dds.Height());
 
 	for (auto& mipmap : dds.mipmaps)
 	{
-		glCompressedTextureSubImage2D(m_DiffuseTextureId, mipmap.level, 0, 0, mipmap.width, mipmap.height, dds.format, mipmap.texture_size, mipmap.data);
+		glCompressedTextureSubImage2D(m_DiffuseTextureId, mipmap.level, 0, 0, mipmap.width, mipmap.height, dds.Format(), mipmap.texture_size, mipmap.data);
 	}
 
 	glBindTextureUnit(0, m_DiffuseTextureId);

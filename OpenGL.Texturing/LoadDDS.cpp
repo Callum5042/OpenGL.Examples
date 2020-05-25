@@ -1,17 +1,36 @@
 #include "LoadDDS.h"
 #include <fstream>
+#include <GL\glew.h>
 #pragma warning(disable : 6385)
 
-#include <iostream>
-#include <GL\glew.h>
+RV::LoadDDS::LoadDDS(std::filesystem::path path)
+{
+	Load(path);
+}
 
-void LoadDDS::Load(const std::string&& path)
+RV::LoadDDS::LoadDDS(std::string&& path)
+{
+	Load(path);
+}
+
+RV::LoadDDS::~LoadDDS()
+{
+	for (auto& x : mipmaps)
+	{
+		delete x.data;
+	}
+
+	mipmaps.clear();
+}
+
+void RV::LoadDDS::Load(const std::string&& path)
 {
 	std::ifstream file(path, std::ios::binary);
 
 	if (!file.is_open())
 	{
-		std::cout << "Could not open file\n";
+		m_ErrorMessage = "Could not open file: " + path;
+		return;
 	}
 
 	std::streampos begin = file.tellg();
@@ -26,62 +45,71 @@ void LoadDDS::Load(const std::string&& path)
 	file.read(buffer, size);
 	file.close();
 
-	// Parse the data
-
 	// Check that it has DDS header
-	
 	if (buffer[0] != 'D' || buffer[1] != 'D' || buffer[2] != 'S')
 	{
-		std::cout << "Not a DDS file\n";
+		m_ErrorMessage = "Not a DDS file";
+		return;
 	}
 
-	// Get width
-	height = (buffer[12]) | (buffer[13] << 8) | (buffer[14] << 16) | (buffer[15] << 24);
-	width = (buffer[16]) | (buffer[17] << 8) | (buffer[18] << 16) | (buffer[19] << 24);
-	mipmap_count = (buffer[28]) | (buffer[29] << 8) | (buffer[30] << 16) | (buffer[31] << 24);
+	// Get header data
+	m_Height = (buffer[12]) | (buffer[13] << 8) | (buffer[14] << 16) | (buffer[15] << 24);
+	m_Width = (buffer[16]) | (buffer[17] << 8) | (buffer[18] << 16) | (buffer[19] << 24);
+	m_MipmapCount = (buffer[28]) | (buffer[29] << 8) | (buffer[30] << 16) | (buffer[31] << 24);
 
+	// Get format
 	int blockSize = 0;
-	if (buffer[87] == '1')
+	switch (buffer[87])
 	{
-		format = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+	case '1':
+		m_Format = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
 		blockSize = 8;
-	}
-	else if (buffer[87] == '3')
-	{
-		format = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
+		break;
+
+	case '3':
+		m_Format = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
 		blockSize = 16;
-	}
-	else if (buffer[87] == '5')
-	{
-		format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+		break;
+
+	case '5':
+		m_Format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
 		blockSize = 16;
-	}
-	else
-	{
-		std::cout << "Not supported\n";
+		break;
+
+	default:
+		m_ErrorMessage = "Not supported";
+		return;
 	}
 
-	// Only do first mipmap
-	int header_size = 128;
+	// Load data into mipmap vector
+	const int header_size = 128;
 
-	int temp_width = width;
-	int temp_height = height;
+	int width = m_Width;
+	int height = m_Height;
 
 	int offset = 0;
-	for (int i = 0; i < mipmap_count; ++i)
+	for (int i = 0; i < m_MipmapCount; ++i)
 	{
 		DDSMipmap mipmap;
 		mipmap.level = i;
-		mipmap.width = temp_width;
-		mipmap.height = temp_height;
+		mipmap.width = width;
+		mipmap.height = height;
 		mipmap.texture_size = ((mipmap.width + 3) / 4) * ((mipmap.height + 3) / 4) * blockSize;
 		mipmap.data = new unsigned char[mipmap.texture_size];
-		memcpy(mipmap.data, buffer + 128 + offset, mipmap.texture_size);
+		memcpy(mipmap.data, buffer + header_size + offset, mipmap.texture_size);
 
 		offset += mipmap.texture_size;
-		temp_width /= 2;
-		temp_height /= 2;
+		width /= 2;
+		height /= 2;
 
 		mipmaps.push_back(mipmap);
 	}
+
+	delete[] buffer;
+	m_Success = true;
+}
+
+void RV::LoadDDS::Load(std::filesystem::path path)
+{
+	Load(path.string());
 }
