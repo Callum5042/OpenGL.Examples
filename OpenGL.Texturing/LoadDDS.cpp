@@ -24,7 +24,7 @@ RV::LoadDDS::~LoadDDS()
 	mipmaps.clear();
 }
 
-void RV::LoadDDS::Load(const std::string&& path)
+void RV::LoadDDS::Load(std::string&& path)
 {
 	std::ifstream file(path, std::ios::binary);
 

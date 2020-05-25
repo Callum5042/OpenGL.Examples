@@ -13,14 +13,20 @@ bool GL::Application::OnInitialise()
 	std::cout << "Shader: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << '\n';
 
 	m_Shader->Load("D:\\Sources\\OpenGL.Testing\\OpenGL.Texturing\\VertexShader.glsl", "D:\\Sources\\OpenGL.Testing\\OpenGL.Texturing\\FragmentShader.glsl");
+	m_Shader->Use();
 
 	// Dithering
 	m_Model->Load();
-	//m_Model->LoadTexture("C:/Users/Callum/Pictures/crate_diffuse.dds");
-	m_Model->LoadTexture("C:/Users/Callum/Pictures/crate_diffuse_mipmap.dds");
+	m_Model->LoadTexture("C:/Users/Callum/Pictures/crate_diffuse.dds");
+	//m_Model->LoadTexture("C:/Users/Callum/Pictures/crate_diffuse_mipmap.dds");
+	//m_Model->LoadTexture("C:/Users/Callum/Pictures/WireFence.dds");
+	//m_Model->LoadTexture("C:/Users/Callum/Pictures/fireball.dds");
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
+
+	/*glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);*/
 	 
 	return true;
 }

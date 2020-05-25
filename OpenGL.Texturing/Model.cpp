@@ -8,8 +8,10 @@
 
 #include <SOIL.h>
 #include <iostream>
-
+#include <SDL_timer.h>
 #include "LoadDDS.h"
+
+glm::mat4 tex_transform2 = glm::mat4(1.0f);
 
 struct Vertex
 {
@@ -110,6 +112,9 @@ void GL::Model::Load()
 
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (GLvoid*)(3 * sizeof(GL_FLOAT)));
 	glEnableVertexAttribArray(1);
+
+
+	tex_transform2 = glm::scale(tex_transform2, glm::vec3(-1.0f, 1.0f, 1.0f));
 }
 
 void GL::Model::Render()
@@ -136,10 +141,16 @@ void GL::Model::Render()
 	unsigned int projTexLoc = glGetUniformLocation(app->Shader()->ShaderId(), "tex_matrix");
 	glUniformMatrix4fv(projTexLoc, 1, GL_FALSE, glm::value_ptr(tex_transform));
 
+	// Update texture transform
+	tex_transform2 = glm::rotate(tex_transform2, glm::radians(90.0f * (float)app->GetTimer().DeltaTime()), glm::vec3(0.0f, 0.0f, 1.0f));
+
+	unsigned int projTexLoc1 = glGetUniformLocation(app->Shader()->ShaderId(), "tex_matrix2");
+	glUniformMatrix4fv(projTexLoc1, 1, GL_FALSE, glm::value_ptr(tex_transform2));
+
 	// Draw
 	glBindVertexArray(m_VertexArrayObject);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
-}
+} 
 
 void GL::Model::LoadTexture(std::string&& texture_path)
 {
@@ -173,4 +184,22 @@ void GL::Model::LoadTexture(std::string&& texture_path)
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipMapCount - 1);
 
 	glBindSampler(0, sampler);
+	glBindSampler(1, sampler);
+
+
+	/// Second
+	RV::LoadDDS dds1;
+	std::string path("C:/Users/Callum/Pictures/fireball.dds");
+	dds1.Load(path);
+
+	GLuint texture;
+	glCreateTextures(GL_TEXTURE_2D, 1, &texture);
+	glTextureStorage2D(texture, dds1.MipmapCount(), dds1.Format(), dds1.Width(), dds1.Height());
+
+	for (auto& mipmap : dds1.mipmaps)
+	{
+		glCompressedTextureSubImage2D(texture, mipmap.level, 0, 0, mipmap.width, mipmap.height, dds1.Format(), mipmap.texture_size, mipmap.data);
+	}
+
+	glBindTextureUnit(1, texture);
 }
