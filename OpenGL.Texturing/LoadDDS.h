@@ -27,7 +27,7 @@ namespace RV
 		LoadDDS() = default;
 		LoadDDS(std::filesystem::path path);
 		LoadDDS(std::string&& path);
-		~LoadDDS();
+		virtual ~LoadDDS();
 
 		void Load(const std::string&& path);
 		void Load(std::filesystem::path path);

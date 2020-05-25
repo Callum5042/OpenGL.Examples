@@ -1,5 +1,6 @@
 #include "LoadDDS.h"
 #include <fstream>
+#include <algorithm>
 #include <GL\glew.h>
 #pragma warning(disable : 6385)
 

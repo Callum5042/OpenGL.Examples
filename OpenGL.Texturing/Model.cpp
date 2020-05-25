@@ -129,6 +129,13 @@ void GL::Model::Render()
 	unsigned int projLoc = glGetUniformLocation(app->Shader()->ShaderId(), "projection");
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(app->Camera()->Projection()));
 
+	// Update texture transform
+	glm::mat4 tex_transform = glm::mat4(1.0f);
+	tex_transform = glm::scale(tex_transform, glm::vec3(-1.0f, 1.0f, 1.0f));
+
+	unsigned int projTexLoc = glGetUniformLocation(app->Shader()->ShaderId(), "tex_matrix");
+	glUniformMatrix4fv(projTexLoc, 1, GL_FALSE, glm::value_ptr(tex_transform));
+
 	// Draw
 	glBindVertexArray(m_VertexArrayObject);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
