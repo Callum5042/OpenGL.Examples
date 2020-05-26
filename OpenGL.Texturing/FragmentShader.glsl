@@ -1,7 +1,7 @@
 #version 450 core
 
 in vec2 fTex;
-in vec2 fTex2;
+in vec2 fTexOverlay;
 
 layout (location = 0) out vec4 colour;
 
@@ -11,12 +11,12 @@ layout (binding = 1) uniform sampler2D tex2;
 void main()
 {
 	vec4 diffuse_colour = texture(tex, fTex);
-	vec4 second_colour = texture(tex2, fTex2);
+	vec4 overlay_colour = texture(tex2, fTexOverlay);
 
 	colour = diffuse_colour;
-	if (second_colour.a > 0.1f)
+	if (overlay_colour.a > 0.1f)
 	{
-		colour.xyz = second_colour.xyz;
+		colour.xyz = overlay_colour.xyz;
 	}
 
 	if (colour.a < 0.1f)

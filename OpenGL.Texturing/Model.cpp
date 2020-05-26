@@ -11,8 +11,6 @@
 #include <SDL_timer.h>
 #include "LoadDDS.h"
 
-glm::mat4 tex_transform2 = glm::mat4(1.0f);
-
 struct Vertex
 {
 	Vertex(float x, float y, float z, float u, float v) : x(x), y(y), z(z), u(u), v(v) {}
@@ -112,9 +110,6 @@ void GL::Model::Load()
 
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (GLvoid*)(3 * sizeof(GL_FLOAT)));
 	glEnableVertexAttribArray(1);
-
-
-	tex_transform2 = glm::scale(tex_transform2, glm::vec3(-1.0f, 1.0f, 1.0f));
 }
 
 void GL::Model::Render()
@@ -142,10 +137,12 @@ void GL::Model::Render()
 	glUniformMatrix4fv(projTexLoc, 1, GL_FALSE, glm::value_ptr(tex_transform));
 
 	// Update texture transform
-	tex_transform2 = glm::rotate(tex_transform2, glm::radians(90.0f * (float)app->GetTimer().DeltaTime()), glm::vec3(0.0f, 0.0f, 1.0f));
+	tex_overlay_transform *= glm::transpose(glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, -0.5f, 0.0f)));
+	tex_overlay_transform *= glm::rotate(glm::mat4(1.0f), glm::radians(90.0f * (float)app->GetTimer().DeltaTime()), glm::vec3(0.0f, 0.0f, 1.0f));
+	tex_overlay_transform *= glm::transpose(glm::translate(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.0f)));
 
-	unsigned int projTexLoc1 = glGetUniformLocation(app->Shader()->ShaderId(), "tex_matrix2");
-	glUniformMatrix4fv(projTexLoc1, 1, GL_FALSE, glm::value_ptr(tex_transform2));
+	unsigned int projTexLoc1 = glGetUniformLocation(app->Shader()->ShaderId(), "tex_overlay_matrix");
+	glUniformMatrix4fv(projTexLoc1, 1, GL_FALSE, glm::value_ptr(tex_overlay_transform));
 
 	// Draw
 	glBindVertexArray(m_VertexArrayObject);
@@ -188,17 +185,17 @@ void GL::Model::LoadTexture(std::string&& texture_path)
 
 
 	/// Second
-	RV::LoadDDS dds1;
+	RV::LoadDDS dds_overlay;
 	std::string path("C:/Users/Callum/Pictures/fireball.dds");
-	dds1.Load(path);
+	dds_overlay.Load(path);
 
 	GLuint texture;
 	glCreateTextures(GL_TEXTURE_2D, 1, &texture);
-	glTextureStorage2D(texture, dds1.MipmapCount(), dds1.Format(), dds1.Width(), dds1.Height());
+	glTextureStorage2D(texture, dds_overlay.MipmapCount(), dds_overlay.Format(), dds_overlay.Width(), dds_overlay.Height());
 
-	for (auto& mipmap : dds1.mipmaps)
+	for (auto& mipmap : dds_overlay.mipmaps)
 	{
-		glCompressedTextureSubImage2D(texture, mipmap.level, 0, 0, mipmap.width, mipmap.height, dds1.Format(), mipmap.texture_size, mipmap.data);
+		glCompressedTextureSubImage2D(texture, mipmap.level, 0, 0, mipmap.width, mipmap.height, dds_overlay.Format(), mipmap.texture_size, mipmap.data);
 	}
 
 	glBindTextureUnit(1, texture);
